@@ -1,0 +1,36 @@
+{
+    "name": "mermaid-comment",
+    "version": "1.0.0",
+    "publisher": "CatBraaain",
+    "engines": {
+        "vscode": "^1.33.1"
+    },
+    "lisence": "MIT",
+    "displayName": "Mermaid Comment",
+    "description": "Comments within Mermaid code blocks using %%, while seamlessly utilizing standard block comments for regular Markdown lines with a single command",
+    "main": "./src/extension.js",
+    "activationEvents": [
+        "onCommand:mermaid-comment.toggleLineComment"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "mermaid-comment.toggleLineComment",
+                "when": "editorLangId == markdown",
+                "title": "Mermaid Comment: Toggle Line Comment"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "mermaid-comment.toggleLineComment",
+                "key": "ctrl+alt+/",
+                "mac": "cmd+alt+/",
+                "when": "editorTextFocus && !editorReadonly"
+            }
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CatBraaain/vscode-mermaid-comment.git"
+    }
+}
