@@ -1,6 +1,6 @@
 {
     "name": "mermaid-comment",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "publisher": "CatBraaain",
     "engines": {
         "vscode": "^1.33.1"
@@ -24,7 +24,7 @@
                 "command": "mermaid-comment.toggleLineComment",
                 "key": "ctrl+alt+/",
                 "mac": "cmd+alt+/",
-                "when": "editorTextFocus && !editorReadonly && editorLangId == markdown"
+                "when": "editorTextFocus && !editorReadonly && editorLangId =~ /markdown|mermaid/"
             }
         ]
     },
