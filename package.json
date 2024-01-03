@@ -1,13 +1,13 @@
 {
     "name": "mermaid-comment",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "publisher": "CatBraaain",
     "engines": {
         "vscode": "^1.33.1"
     },
     "lisence": "MIT",
     "displayName": "Mermaid Comment",
-    "description": "Comments within Mermaid code blocks using %%, while seamlessly utilizing standard block comments for regular Markdown lines with a single command",
+    "description": "Comment with `%%` for Mermaid lines and with `<!-- -->` for regular Markdown lines, with a single command.",
     "main": "./src/extension.js",
     "activationEvents": [
         "onCommand:mermaid-comment.toggleLineComment"
