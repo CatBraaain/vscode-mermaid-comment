@@ -42,7 +42,7 @@ async function getCommentString() {
 }
 
 function getMermaidLineNums(editor) {
-  const mermaidRegex = new RegExp("```mermaid[\\s\\S]*```", "gm");
+  const mermaidRegex = new RegExp("(```|:::)[^\\S\\r\\n]*mermaid[\\s\\S]*(```|:::)", "gm");
   const matches = [...editor.document.getText().matchAll(mermaidRegex)];
 
   const mermaidLines = matches

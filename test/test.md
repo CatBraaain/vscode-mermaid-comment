@@ -18,7 +18,7 @@ c
 ```mermaid
     %%{init: {'theme':'dark'}}%%
     graph TD;
-        AB; -->
+        A-->B;
         A-->C;
         B-->D;
 
@@ -27,4 +27,15 @@ c
 d
 e
 f
-
+:::mermaid
+graph LR
+%% <----- keyword.control.mermaid
+%%    ^^ entity.name.function.mermaid
+  A --> B;
+%%^ variable
+%%  ^^^ keyword.control.mermaid
+%%      ^ variable
+:::
+g
+h
+i

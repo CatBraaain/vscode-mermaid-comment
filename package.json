@@ -1,6 +1,6 @@
 {
     "name": "mermaid-comment",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "publisher": "CatBraaain",
     "engines": {
         "vscode": "^1.33.1"
