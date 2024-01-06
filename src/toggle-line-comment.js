@@ -15,10 +15,11 @@ async function main() {
     for (const selectionLineNums of selectionsLineNums) {
       const selectionLines = selectionLineNums.map(i => editor.document.lineAt(i));
       const isMermaidSelection = selectionLineNums.every(i => mermaidLineNums.includes(i));
+      const targetLines = selectionLines.filter(targetLine => !targetLine.isEmptyOrWhitespace);
       if (isMermaidSelection) {
-        toggleMermaidComment(editBuilder, selectionLines, mermaidCommentString);
+        toggleMermaidComment(editBuilder, targetLines, mermaidCommentString);
       } else {
-        toggleMarkdownComment(editBuilder, selectionLines, markdownCommentStrings);
+        toggleMarkdownComment(editBuilder, targetLines, markdownCommentStrings);
       }
     }
   });
@@ -66,36 +67,36 @@ function getSelectionsLineNums(editor) {
   return selectionsLineNums;
 }
 
-function toggleMermaidComment(editBuilder, selectionLines, mermaidCommentString) {
+function toggleMermaidComment(editBuilder, targetLines, mermaidCommentString) {
   const mermaidCommentRegex = new RegExp(`^\\s*${MERMAID_COMMENT_SYMBOL}`);
-  const shouldComment = !selectionLines.every(line => mermaidCommentRegex.test(line.text));
+  const shouldComment = !targetLines.every(line => mermaidCommentRegex.test(line.text));
   if (shouldComment) {
-    const selectionIndentationIndex = getIndentationIndex(selectionLines);
+    const indentationIndex = getIndentationIndex(targetLines);
 
-    for (const selectionLine of selectionLines) {
+    for (const targetLine of targetLines) {
       editBuilder.insert(
-        new vscode.Position(selectionLine.lineNumber, selectionIndentationIndex),
+        new vscode.Position(targetLine.lineNumber, indentationIndex),
         mermaidCommentString
       );
     }
   } else {
-    for (const selectionLine of selectionLines) {
-      const commentRange = getTextRangeInLine(mermaidCommentString, selectionLine);
+    for (const targetLine of targetLines) {
+      const commentRange = getTextRangeInLine(mermaidCommentString, targetLine);
       editBuilder.delete(commentRange);
     }
   }
 }
 
-function toggleMarkdownComment(editBuilder, selectionLines, markdownCommentStrings) {
+function toggleMarkdownComment(editBuilder, targetLines, markdownCommentStrings) {
   const markdownCommentRegex = new RegExp(
     `^\\s*${MARKDOWN_COMMENT_SYMBOLS[0]}[\\s\\S]*${MARKDOWN_COMMENT_SYMBOLS[1]}[^\\S\\r\\n]*$`
   );
-  const shouldComment = !markdownCommentRegex.test(selectionLines.map(e => e.text).join("\n"));
+  const shouldComment = !markdownCommentRegex.test(targetLines.map(e => e.text).join("\n"));
 
-  const startLine = selectionLines[0];
-  const endLine = selectionLines[selectionLines.length - 1];
+  const startLine = targetLines[0];
+  const endLine = targetLines[targetLines.length - 1];
   if (shouldComment) {
-    const selectionIndentationIndex = getIndentationIndex(selectionLines);
+    const selectionIndentationIndex = getIndentationIndex(targetLines);
 
     editBuilder.insert(
       new vscode.Position(startLine.lineNumber, selectionIndentationIndex),
