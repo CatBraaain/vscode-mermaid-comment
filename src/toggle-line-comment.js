@@ -70,9 +70,7 @@ function toggleMermaidComment(editBuilder, selectionLines, mermaidCommentString)
   const mermaidCommentRegex = new RegExp(`^\\s*${MERMAID_COMMENT_SYMBOL}`);
   const shouldComment = !selectionLines.every(line => mermaidCommentRegex.test(line.text));
   if (shouldComment) {
-    const selectionIndentationIndex = selectionLines
-      .map(targetLine => getTextRangeInLine(/^\s*/, targetLine).end.character)
-      .reduce((a, b) => Math.min(a, b), Infinity);
+    const selectionIndentationIndex = getIndentationIndex(selectionLines);
 
     for (const selectionLine of selectionLines) {
       editBuilder.insert(
@@ -97,9 +95,7 @@ function toggleMarkdownComment(editBuilder, selectionLines, markdownCommentStrin
   const startLine = selectionLines[0];
   const endLine = selectionLines[selectionLines.length - 1];
   if (shouldComment) {
-    const selectionIndentationIndex = selectionLines
-      .map(selectionLine => getTextRangeInLine(/^\s*/, selectionLine).end.character)
-      .reduce((a, b) => Math.min(a, b), Infinity);
+    const selectionIndentationIndex = getIndentationIndex(selectionLines);
 
     editBuilder.insert(
       new vscode.Position(startLine.lineNumber, selectionIndentationIndex),
@@ -112,6 +108,14 @@ function toggleMarkdownComment(editBuilder, selectionLines, markdownCommentStrin
     editBuilder.delete(openingCommentRange);
     editBuilder.delete(closingCommentRange);
   }
+}
+
+function getIndentationIndex(targetLines) {
+  const selectionIndentationIndex = targetLines
+    .filter(targetLine => !targetLine.isEmptyOrWhitespace)
+    .map(targetLine => getTextRangeInLine(/^\s*/, targetLine).end.character)
+    .reduce((a, b) => Math.min(a, b), Infinity);
+  return selectionIndentationIndex;
 }
 
 function getTextRangeInLine(searchText, targetLine) {
