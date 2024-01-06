@@ -12,30 +12,30 @@ Comment with `%%` for Mermaid lines and with `<!-- -->` for regular Markdown lin
 
 ## Default
 
-can toggle comment in markdown language with `ctrl+alt+/`.
+can toggle comment in Markdown language with `ctrl+alt+/`.
 
 ```json
     {
         "key": "ctrl+alt+/",
         "command": "mermaid-comment.toggleLineComment",
-        "when": "editorTextFocus && !editorReadonly && editorLangId =~ /markdown|mermaid/"
+        "when": "editorTextFocus && !editorReadonly && editorLangId =~ /markdown/"
     },
 ```
 
 ## Advance
 
-can toggle comment in all languages including Mermaid language with `ctrl+/` like as default
+can toggle comment in all languages including Markdown language with `ctrl+/` like as default
 
 ```json
     {
         "key": "ctrl+alt+/",
         "command": "-mermaid-comment.toggleLineComment",
-        "when": "editorTextFocus && !editorReadonly && editorLangId =~ /markdown|mermaid/"
+        "when": "editorTextFocus && !editorReadonly && editorLangId =~ /markdown/"
     },
     {
         "key": "ctrl+/",
         "command": "mermaid-comment.toggleLineComment",
-        "when": "editorTextFocus && !editorReadonly && editorLangId =~ /markdown|mermaid/"
+        "when": "editorTextFocus && !editorReadonly && editorLangId =~ /markdown/"
     },
     {
         "key": "ctrl+/",
@@ -45,7 +45,7 @@ can toggle comment in all languages including Mermaid language with `ctrl+/` lik
     {
         "key": "ctrl+/",
         "command": "editor.action.commentLine",
-        "when": "editorTextFocus && !editorReadonly && !(editorLangId =~ /markdown|mermaid/)"
+        "when": "editorTextFocus && !editorReadonly && !(editorLangId =~ /markdown/)"
     },
 ```
 
