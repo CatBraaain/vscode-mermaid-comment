@@ -1,7 +1,9 @@
 const vscode = require("vscode");
 
 const MERMAID_COMMENT_SYMBOL = "%%";
+const MERMAID_COMMENT_REGEX = new RegExp(`${MERMAID_COMMENT_SYMBOL} ?`);
 const MARKDOWN_COMMENT_SYMBOLS = ["<!--", "-->"];
+const MARKDOWN_COMMENT_REGEXS = ["<!-- ?", " ?-->"];
 
 async function main() {
   const [mermaidCommentString, markdownCommentStrings] = await getCommentString();
@@ -68,8 +70,8 @@ function getSelectionsLineNums(editor) {
 }
 
 function toggleMermaidComment(editBuilder, targetLines, mermaidCommentString) {
-  const mermaidCommentRegex = new RegExp(`^\\s*${MERMAID_COMMENT_SYMBOL}`);
-  const shouldComment = !targetLines.every(line => mermaidCommentRegex.test(line.text));
+  const mermaidCommentLineRegex = new RegExp(`^\\s*${MERMAID_COMMENT_SYMBOL}`);
+  const shouldComment = !targetLines.every(line => mermaidCommentLineRegex.test(line.text));
   if (shouldComment) {
     const indentationIndex = getIndentationIndex(targetLines);
 
@@ -81,18 +83,18 @@ function toggleMermaidComment(editBuilder, targetLines, mermaidCommentString) {
     }
   } else {
     for (const targetLine of targetLines) {
-      const commentRange = getTextRangeInLine(mermaidCommentString, targetLine);
+      const commentRange = getTextRangeInLine(MERMAID_COMMENT_REGEX, targetLine);
       editBuilder.delete(commentRange);
     }
   }
 }
 
 function toggleMarkdownComment(editBuilder, targetLines, markdownCommentStrings) {
-  const markdownCommentRegex = new RegExp(
+  const markdownCommentBlockRegex = new RegExp(
     `^\\s*${MARKDOWN_COMMENT_SYMBOLS[0]}[\\s\\S]*${MARKDOWN_COMMENT_SYMBOLS[1]}[^\\S\\r\\n]*$`
   );
   const targetLinesStr = targetLines.map(e => e.text).join("\n");
-  const shouldComment = !markdownCommentRegex.test(targetLinesStr);
+  const shouldComment = !markdownCommentBlockRegex.test(targetLinesStr);
 
   const startLine = targetLines[0];
   const endLine = targetLines[targetLines.length - 1];
@@ -105,8 +107,8 @@ function toggleMarkdownComment(editBuilder, targetLines, markdownCommentStrings)
     );
     editBuilder.insert(endLine.range.end, markdownCommentStrings[1]);
   } else {
-    const openingCommentRange = getTextRangeInLine(markdownCommentStrings[0], startLine);
-    const closingCommentRange = getTextRangeInLine(markdownCommentStrings[1], endLine);
+    const openingCommentRange = getTextRangeInLine(MARKDOWN_COMMENT_REGEXS[0], startLine);
+    const closingCommentRange = getTextRangeInLine(MARKDOWN_COMMENT_REGEXS[1], endLine);
     editBuilder.delete(openingCommentRange);
     editBuilder.delete(closingCommentRange);
   }

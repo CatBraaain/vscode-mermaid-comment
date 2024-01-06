@@ -16,8 +16,9 @@ a
 b
 c
 ```mermaid
+    %%{init: {'theme':'dark'}}%%
     graph TD;
-        A-->B;
+        AB; -->
         A-->C;
         B-->D;
 
