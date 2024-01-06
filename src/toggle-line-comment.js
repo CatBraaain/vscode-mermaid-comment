@@ -91,7 +91,8 @@ function toggleMarkdownComment(editBuilder, targetLines, markdownCommentStrings)
   const markdownCommentRegex = new RegExp(
     `^\\s*${MARKDOWN_COMMENT_SYMBOLS[0]}[\\s\\S]*${MARKDOWN_COMMENT_SYMBOLS[1]}[^\\S\\r\\n]*$`
   );
-  const shouldComment = !markdownCommentRegex.test(targetLines.map(e => e.text).join("\n"));
+  const targetLinesStr = targetLines.map(e => e.text).join("\n");
+  const shouldComment = !markdownCommentRegex.test(targetLinesStr);
 
   const startLine = targetLines[0];
   const endLine = targetLines[targetLines.length - 1];
