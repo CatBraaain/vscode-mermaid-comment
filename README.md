@@ -1,4 +1,6 @@
-﻿# Mermaid Comment
+﻿This Extension is deprecated. Use the [Mermaid](https://marketplace.visualstudio.com/items?itemName=CatBraaain.mermaid) extension instead.
+
+# Mermaid Comment
 
 Comment with `%%` for Mermaid lines and with `<!-- -->` for regular Markdown lines, with a single command.
 
